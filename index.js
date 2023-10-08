@@ -33,6 +33,11 @@ async function run() {
 
 
 
+    app.get('/jewellarys', async(req, res)=>{
+        const cursor = AdornamentsCollection.find();
+        const result = await cursor.toArray();
+        res.send(result);
+      })
 
 
     app.post('/jewellarys', async(req, res)=>{
