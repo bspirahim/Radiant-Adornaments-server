@@ -31,25 +31,26 @@ async function run() {
     const AdornamentsCollection = client.db("AdornamentsDB").collection("Jewellarys");
 
 
-    
-    app.get('/jewellarys', async(req, res)=>{
-        let query = {};
-        if(req.query?.email){
-          query = {email: req.query.email }
-        }
-        if(req.query?.category){
-          query = {category: req.query.category}
-        }
-        const result = await AdornamentsCollection.find(query).toArray();
-        res.send(result)
-      })
+
+    app.get('/jewellarys', async (req, res) => {
+      const limit = parseInt(req.query?.limit);
+      const cursor = AdornamentsCollection.find();
+      if (limit > 0) {
+        cursor.limit(limit);
+      }
+      const result = await cursor.toArray();
+      res.send(result);
+    })
 
 
-    app.get('/jewellarys', async(req, res)=>{
-        const cursor = AdornamentsCollection.find();
-        const result = await cursor.toArray();
-        res.send(result);
-      })
+    app.get('/my-jewellarys', async (req, res) => {
+      let query = {
+        email: req.query.email
+      }
+      const cursor = await AdornamentsCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
 
 
     app.post('/jewellarys', async(req, res)=>{
