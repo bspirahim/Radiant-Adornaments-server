@@ -31,6 +31,18 @@ async function run() {
     const AdornamentsCollection = client.db("AdornamentsDB").collection("Jewellarys");
 
 
+    
+    app.get('/jewellarys', async(req, res)=>{
+        let query = {};
+        if(req.query?.email){
+          query = {email: req.query.email }
+        }
+        if(req.query?.category){
+          query = {category: req.query.category}
+        }
+        const result = await AdornamentsCollection.find(query).toArray();
+        res.send(result)
+      })
 
 
     app.get('/jewellarys', async(req, res)=>{
